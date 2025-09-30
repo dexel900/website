@@ -1,0 +1,264 @@
+/* Tailwind v4 core */
+@import "tailwindcss";
+
+/* =========================
+   THEME (Default: Dark)
+   ========================= */
+@theme {
+  /* Maße & Radius */
+  --size-container: 1200px;
+  --radius-sm: .25rem;
+  --radius-md: .5rem;
+  --radius-lg: .75rem;
+  --radius-pill: 9999px;
+
+  /* Schatten */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .12);
+  --shadow-md: 0 8px 22px rgb(0 0 0 / .10), 0 26px 60px rgb(0 0 0 / .18);
+  --shadow-lg: 0 32px 80px rgb(0 0 0 / .25);
+
+  /* Farben (Dark) */
+  /* Brand-Primary = Weiß im Dark, Schwarz im Light (s.u.) */
+  --color-brand-primary: 0 0% 100%;
+  --color-brand-secondary: 32 100% 50%; /* ~ #FF8A00 */
+
+  /* Text: base = 50% Weiß, muted = Vollweiß */
+  --color-text-base: 0 0% 100% / .50;
+  --color-text-muted: 0 0% 100%;
+
+  /* Flächen */
+  --color-bg-base: 0 0% 0%;   /* Schwarz */
+  --color-surface: 0 0% 6%;
+  --color-border: 0 0% 18%;
+
+  /* Typo-Familien */
+  --font-body: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: "Outfit", var(--font-body);
+
+  /* Typo-Größen (aus deiner Vorgabe) */
+  --font-size-h1: 86px;
+  --font-size-h2: 68px;
+  --font-size-h3: 44px;
+  --font-size-h4: 26px;
+  --font-size-p: 16px;
+
+  /* Headline-Farbe (Dark = weiß, Light = schwarz) */
+  --color-heading: 0 0% 100%;
+}
+
+/* Light Theme aktivieren mit .theme-light auf <html> oder <body> */
+.theme-light {
+  --color-brand-primary: 0 0% 0%;
+  --color-bg-base: 0 0% 100%;
+  --color-surface: 0 0% 98%;
+  --color-border: 0 0% 88%;
+
+  /* Headlines schwarz, Body-Text etwas dunkler */
+  --color-heading: 0 0% 0%;
+  --color-text-base: 0 0% 0% / .60;
+  --color-text-muted: 0 0% 10%;
+}
+
+/* =========================
+   BASE (Globals)
+   ========================= */
+@layer base {
+  body {
+    background: hsl(var(--color-bg-base));
+    color: hsl(var(--color-text-muted)); /* default-Farbe */
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    font-family: var(--font-display);
+    color: hsl(var(--color-text-muted)); /* nutzt Theme */
+  }
+  p, li, small, span {
+    font-family: var(--font-body);
+    color: hsl(var(--color-text-base));  /* nutzt Theme */
+  }
+
+  /* Typo-Skala global */
+    h1 {
+    @apply font-display font-bold tracking-tight;
+    font-size: clamp(2rem, 5vw + 1rem, 4.5rem);
+    line-height: 1.1;
+  }
+  h2 {
+    @apply font-display font-semibold;
+    font-size: clamp(1.5rem, 3vw + 0.5rem, 3rem);
+    line-height: 1.2;
+  }
+  h3 {
+    @apply font-display font-semibold;
+    font-size: clamp(1.25rem, 2vw + 0.5rem, 2rem);
+  }
+  p {
+    @apply font-body;
+    font-size: clamp(1rem, 1.2vw + 0.25rem, 1.125rem);
+    color: hsl(var(--color-text-base));
+    line-height: 1.6;
+  }
+
+  /* Global Scrollbar */
+  /* Firefox */
+  html { scrollbar-width: thin; scrollbar-color: hsl(var(--color-brand-secondary)) #000; }
+
+  /* WebKit (Chromium, Safari, Edge) */
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: #000; }
+  *::-webkit-scrollbar-thumb {
+    background: hsl(var(--color-brand-secondary));
+    border-radius: var(--radius-pill);
+    border: 2px solid #000;
+  }
+  *::-webkit-scrollbar-thumb:hover { filter: brightness(1.05); }
+}
+
+/* =========================
+   COMPONENTS
+   ========================= */
+@layer components {
+  /* Header-Pill */
+  .wb-header {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100000;
+    width: min(var(--size-container), calc(100% - 24px));
+    padding: 10px 20px;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(to bottom right, rgba(255,255,255,.88), rgba(255,255,255,.65));
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    box-shadow: var(--shadow-md);
+    transition: transform .4s ease, opacity .4s ease;
+  }
+  .wb-header.hide { transform: translateX(-50%) translateY(-120%); opacity: 0; }
+  .wb-header.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  .wb-wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: nowrap; }
+  .wb-logo img { height: 22px; display: block; margin-left: 6px; }
+  .logo-invert { filter: invert(1); }
+
+  /* CTA Button (tokenisiert) */
+  .contact-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 50px 14px 20px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-size: 10px;
+    line-height: 1;
+    color: #000;
+    text-decoration: none;
+    border: 2px solid hsl(var(--color-brand-secondary));
+    background: hsl(var(--color-brand-secondary));
+    overflow: hidden;
+    transform: translateZ(0);
+  }
+  .contact-btn .cta-label {
+    position: relative; z-index: 30;
+    transition: color .9s cubic-bezier(.22,1,.36,1);
+    color: #000;
+  }
+  .contact-btn:hover .cta-label,
+  .contact-btn:focus-visible .cta-label {
+    color: hsl(var(--color-brand-secondary));
+  }
+  .contact-btn .cta-circle {
+    position: absolute; right: 6px; top: 50%;
+    transform: translateY(-50%) scale(1);
+    width: 30px; height: 30px; border-radius: var(--radius-pill);
+    background: #000; z-index: 10;
+    transition: transform .9s cubic-bezier(.22,1,.36,1);
+    will-change: transform;
+  }
+  .contact-btn:hover .cta-circle,
+  .contact-btn:focus-visible .cta-circle {
+    transform: translateY(-50%) scale(20);
+  }
+  .contact-btn .cta-arrow {
+    position: absolute; right: 6px; top: 50%;
+    transform: translateY(-57%);
+    width: 30px; height: 30px; display: grid; place-items: center;
+    border-radius: var(--radius-pill);
+    color: hsl(var(--color-brand-secondary));
+    font-size: 22px; line-height: 1;
+    z-index: 40; pointer-events: none;
+  }
+  .contact-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in srgb, hsl(var(--color-brand-secondary)) 35%, transparent);
+  }
+}
+
+/* =========================
+   UTILITIES
+   ========================= */
+@layer components {
+  .wb-container {
+    margin-inline: auto;
+    width: 100%;
+    max-width: var(--size-container);
+    padding-inline: 1.5rem; /* 32px auf Mobile */
+  }
+  @media (min-width: 640px) { .wb-container { padding-inline: 2.5rem; } } /* 40px */
+  @media (min-width: 1024px){ .wb-container { padding-inline: 3rem; } }   /* 48px */
+}
+
+/* =========================
+   RESPONSIVE TWEAKS
+   ========================= */
+@media (max-width: 768px) {
+  .wb-header { top: 12px; width: calc(100% - 16px); padding: 8px 14px; }
+  .wb-wrap { gap: 8px; }
+  .wb-logo img { height: 18px; margin-left: 2px; }
+  .contact-btn { padding: 12px 44px 12px 16px; font-size: 9px; }
+}
+@layer components {
+  /* Basis Dark Card */
+  .card-dark {
+    @apply rounded-[var(--radius-lg)]
+           bg-[hsl(var(--color-surface))] text-[hsl(var(--color-text-muted))]
+           border border-[hsl(var(--color-border))]
+           shadow-[var(--shadow-md)]
+           p-5 sm:p-6 lg:p-7
+           relative overflow-hidden;
+  }
+
+  /* Bild-Slice rechts/links (ab Desktop absolut, mobil inline) */
+  .card-dark--slice { @apply relative flex flex-col gap-3; }
+  .card-dark--slice .slice-text { @apply z-10 max-w-[50%]; }
+  .card-dark--slice .slice-img  { @apply absolute bottom-0 w-[40%] max-w-[260px] translate-y-[25%]; }
+  .card-dark--slice.slice-right .slice-img { right: 0; }
+  .card-dark--slice.slice-left  .slice-img { left: 0; }
+
+  /* Mobil: Bild inline, keine absolute Position */
+  @media (max-width: 900px) {
+    .card-dark--slice { @apply flex-row items-center; }
+    .card-dark--slice .slice-text { @apply flex-1 max-w-none mr-2; }
+    .card-dark--slice .slice-img  { @apply static translate-y-0 w-[45%] max-w-none; }
+    .card-dark--slice .slice-img img { @apply rounded-xl; }
+  }
+
+  /* Vollflächen-Background-Card (SEA/E-Mail) */
+  .card-dark--bg {
+    @apply relative flex items-end text-left h-[220px]
+           bg-cover bg-center
+           p-7 lg:p-8
+           rounded-[var(--radius-lg)]
+           overflow-hidden
+           transition-transform duration-300;
+  }
+  .card-dark--bg:hover { @apply -translate-y-[3px] shadow-[var(--shadow-lg)]; }
+
+  /* Titles & copy (können deine globalen h3/p übernehmen) */
+  .card-dark-title { @apply text-xl font-semibold; }
+  .card-dark-copy  { @apply text-sm sm:text-base text-[hsl(var(--color-text-base))]; }
+}
