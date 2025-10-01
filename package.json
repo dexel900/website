@@ -30,5 +30,11 @@
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.13",
     "typescript": "^5"
-  }
+  },
+  "scripts": {
+  "dev": "next dev",
+  "build": "next build --turbopack",
+  "start": "next start",
+  "lint": "eslint --fix ."
+}
 }
