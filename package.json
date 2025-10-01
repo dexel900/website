@@ -32,9 +32,11 @@
     "typescript": "^5"
   },
   "scripts": {
-  "dev": "next dev",
-  "build": "next build --turbopack",
-  "start": "next start",
-  "lint": "eslint --fix ."
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next export",
+    "build:static": "next build && next export",
+    "start:static:preview": "npx serve out -p 4173"
+  }
 }
-}
+
