@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import ReviewCard from "@/components/ui/ReviewCard";
 import HexPyramidBg from "@/components/visuals/HexPyramidBg";
 

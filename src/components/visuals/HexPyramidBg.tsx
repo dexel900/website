@@ -150,10 +150,17 @@ export default function HexPyramidBg() {
     }
 
     raf = requestAnimationFrame(render);
+
+    const onResize = () => {
+    DPR = Math.min(DPR_CAP, window.devicePixelRatio || 1);
+    resize();
+    };
+    window.addEventListener("resize", onResize, { passive: true });
+
     return () => {
-      cancelAnimationFrame(raf);
-      ro.disconnect();
-      window.removeEventListener("resize", resize as any);
+    cancelAnimationFrame(raf);
+    ro.disconnect();
+    window.removeEventListener("resize", onResize);
     };
   }, []);
 

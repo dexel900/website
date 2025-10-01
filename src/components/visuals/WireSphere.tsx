@@ -28,7 +28,7 @@ export default function WireSphere({
   useEffect(() => {
     const wrap = wrapRef.current!;
     const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // === Initialen Zustand "einfrieren" ===
@@ -82,7 +82,7 @@ export default function WireSphere({
     function project(p: { x: number; y: number; z: number }, w: number, h: number, cx: number, cy: number) {
       const cX = Math.cos(rotX), sX = Math.sin(rotX);
       const cY = Math.cos(rotY), sY = Math.sin(rotY);
-      let { x, y, z } = p;
+      const { x, y, z } = p;
       const x1 = cY * x + sY * z;
       const z1 = -sY * x + cY * z;
       const y2 = cX * y - sX * z1;
@@ -144,7 +144,7 @@ export default function WireSphere({
     raf = requestAnimationFrame(render);
 
     // Keine ResizeObserver/Widow-Resize Reaktion bei lockOnMount
-    let onResize: ((this: Window, ev: UIEvent) => any) | null = null;
+    let onResize: (() => void) | null = null;
     if (!lockOnMount) {
       onResize = () => {
         const r = wrap.getBoundingClientRect();

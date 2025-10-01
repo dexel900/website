@@ -1,8 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
+
 import Card from "@/components/ui/Card/Card";
+
 import s from "./ButtonDesigner.module.css";
+
+type CSSWithVars = React.CSSProperties & Record<`--${string}`, string | number>;
 
 export default function ButtonDesigner() {
   const [text, setText] = useState("Zur neuen Website");
@@ -70,14 +74,14 @@ export default function ButtonDesigner() {
       </div>
 
       <a
-        href="#contact"
-        className={s.previewBtn}
-        style={
-          {
-            ["--btn-br" as any]: `${radius}px`,
-            ["--btn-bg" as any]: bg,
-            ["--btn-ff" as any]: font,
-          } as React.CSSProperties
+  href="#contact"
+  className={s.previewBtn}
+  style={
+    {
+      "--btn-br": `${radius}px`,
+      "--btn-bg": bg,
+      "--btn-ff": font,
+    } as CSSWithVars
         }
       >
         <span className={s.previewLabel}>{label}</span>

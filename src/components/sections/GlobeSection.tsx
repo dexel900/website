@@ -1,9 +1,42 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
+/* ==== Typen für global geladene Scripts (THREE & VANTA) ==== */
+type ThreeNS = unknown;
+
+type VantaInstance = {
+  destroy?: () => void;
+  // VANTA-Instanzen haben oft auch setOptions – wenn vorhanden, könntest du so updaten,
+  // wir re-initialisieren aber wie im Original.
+  setOptions?: (opts: Partial<Parameters<VantaGlobeFn>[0]>) => void;
+};
+
+type VantaGlobeFn = (opts: {
+  el: HTMLElement;
+  THREE: ThreeNS;
+  mouseControls?: boolean;
+  touchControls?: boolean;
+  gyroControls?: boolean;
+  minHeight?: number;
+  minWidth?: number;
+  scale?: number;
+  scaleMobile?: number;
+  backgroundColor?: number;
+  color?: number;
+  color2?: number;
+  size?: number;
+}) => VantaInstance;
+
+declare global {
+  interface Window {
+    THREE?: ThreeNS;
+    VANTA?: { GLOBE?: VantaGlobeFn };
+  }
+}
+
 export default function GlobeSection() {
   const elRef = useRef<HTMLDivElement | null>(null);
-  const vantaRef = useRef<any>(null);
+  const vantaRef = useRef<VantaInstance | null>(null);
 
   const [color1, setColor1] = useState("#ff9800");
   const [color2, setColor2] = useState("#ff9800");
@@ -13,14 +46,16 @@ export default function GlobeSection() {
     if (!elRef.current) return;
 
     let cancelled = false;
+
     const waitForVanta = () =>
       new Promise<void>((resolve, reject) => {
         const started = Date.now();
         const tick = () => {
           const ok =
-            typeof (window as any).THREE !== "undefined" &&
-            (window as any).VANTA &&
-            (window as any).VANTA.GLOBE;
+            typeof window !== "undefined" &&
+            typeof window.THREE !== "undefined" &&
+            !!window.VANTA &&
+            !!window.VANTA.GLOBE;
           if (ok) return resolve();
           if (Date.now() - started > 8000)
             return reject(new Error("VANTA not loaded"));
@@ -31,9 +66,12 @@ export default function GlobeSection() {
 
     waitForVanta()
       .then(() => {
-        const Globe = (window as any).VANTA.GLOBE;
-        const THREE = (window as any).THREE;
+        const Globe = window.VANTA!.GLOBE!;
+        const THREE = window.THREE!;
+
+        // alte Instanz abbauen (falls vorhanden)
         vantaRef.current?.destroy?.();
+        vantaRef.current = null;
 
         if (!cancelled && elRef.current) {
           vantaRef.current = Globe({
@@ -49,16 +87,21 @@ export default function GlobeSection() {
             backgroundColor: 0xffffff,
             color: parseInt(color1.replace("#", "0x")),
             color2: parseInt(color2.replace("#", "0x")),
-            size: size / 50,
+            size: size / 50, // wie im Original
           });
         }
       })
-      .catch((e) => console.warn("[VANTA] Init failed:", e));
+      .catch((_e) => {
+        // optional: Logging, aber kein any
+        // console.warn("[VANTA] Init failed:", e);
+      });
 
     return () => {
       cancelled = true;
       vantaRef.current?.destroy?.();
+      vantaRef.current = null;
     };
+    // Dependencies wie im Original: auf Änderungen re-init
   }, [color1, color2, size]);
 
   return (

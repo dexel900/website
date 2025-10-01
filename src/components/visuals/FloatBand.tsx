@@ -1,5 +1,8 @@
 "use client";
 
+type CSSWithVars = React.CSSProperties & Record<`--${string}`, string | number>;
+
+
 type Props = {
   color?: string;          // Linienfarbe
   speedMs?: number;        // Dauer für eine Bewegung
@@ -21,13 +24,7 @@ export default function FloatBand({
     <div
       className={className}
       aria-hidden
-      style={
-        {
-          ["--fb-color" as any]: color,
-          ["--fb-speed" as any]: `${speedMs}ms`,
-          ["--fb-w" as any]: `${widthPx}px`,
-        } as React.CSSProperties
-      }
+      style={{ "--fb-color": color, "--fb-speed": `${speedMs}ms`, "--fb-w": `${widthPx}px` } as CSSWithVars}
     >
       <div className="fb-wrap">
         <svg

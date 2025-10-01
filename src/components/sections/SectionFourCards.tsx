@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+
 import Card, { CardSection, CardImage } from "@/components/ui/Card/Card";
 import Chips from "@/components/ui/Chips/Chips";
 import ButtonDesigner from "@/components/blocks/ButtonDesigner/ButtonDesigner";

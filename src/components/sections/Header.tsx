@@ -1,6 +1,9 @@
 "use client";
+
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import Image from "next/image";
+
 import PrimaryButton from "@/components/ui/PrimaryButton";
 
 export default function Header() {
@@ -24,9 +27,9 @@ export default function Header() {
   return (
     <header ref={ref} className="wb-header show" role="banner" aria-label="Site header">
       <div className="wb-wrap">
-        <a href="/" className="wb-logo" aria-label="Zur Startseite">
+        <Link href="/" className="wb-logo" aria-label="Zur Startseite">
           <Image src="/logo.webp" alt="webbinich" width={120} height={24} priority />
-        </a>
+        </Link>
         <nav className="wb-actions" aria-label="Primary actions">
           <PrimaryButton href="#contact" />
         </nav>

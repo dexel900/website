@@ -1,8 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/cn";
-import styles from "./Card.module.css";
 import type { PropsWithChildren, HTMLAttributes } from "react";
+
+import { cn } from "@/lib/cn";
+
+import styles from "./Card.module.css";
+
+
 
 type Variant = "base" | "split" | "vertical" | "bg" | "mini";
 

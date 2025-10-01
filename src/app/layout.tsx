@@ -1,9 +1,13 @@
+import Script from "next/script";
 import type { Metadata } from "next";
 import { Open_Sans, Outfit } from "next/font/google";
+
 import "./globals.css";
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
-import Script from "next/script";
+
+
+
 
 export const metadata: Metadata = { title: "webbinich.agency" };
 

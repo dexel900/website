@@ -1,6 +1,9 @@
 "use client";
 import Image from "next/image";
 
+type CSSWithVars = React.CSSProperties & Record<`--${string}`, string | number>;
+
+
 type Logo = { src: string; alt: string; width?: number; height?: number };
 type Props = {
   logos: Logo[];
@@ -20,13 +23,7 @@ export default function LogosMarquee({
   return (
     <div
       className={`relative w-full overflow-hidden ${className}`}
-      style={
-        {
-          ["--speed" as any]: `${speedMs}ms`,
-          ["--gap" as any]: `${gapPx}px`,
-          height: `${heightPx}px`,
-        } as React.CSSProperties
-      }
+      style={{ "--speed": `${speedMs}ms`, "--gap": `${gapPx}px`, height: `${heightPx}px` } as CSSWithVars}
       aria-label="Unsere Kundenlogos"
     >
       {/* EIN Track mit zwei identischen Reihen → nahtlos */}
