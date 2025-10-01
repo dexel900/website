@@ -1,6 +1,7 @@
 // eslint.config.mjs
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+
 import { FlatCompat } from "@eslint/eslintrc";
 import importPlugin from "eslint-plugin-import";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -9,11 +10,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
-export default [
-  // Next + TS Basis
+const config = [
+  // 1) Ignorierte Pfade (ersetzt .eslintignore)
+  {
+    ignores: [
+      ".next/**",
+      "node_modules/**",
+      "dist/**",
+      "out/**",
+      "coverage/**",
+      "public/**",
+      // generated type stubs:
+      "next-env.d.ts",
+    ],
+  },
+
+  // 2) Next + TS Basis
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 
-  // Unsere Ergänzungen
+  // 3) Unsere Ergänzungen
   {
     plugins: {
       import: importPlugin,
@@ -43,10 +58,12 @@ export default [
 
       // Unused vars entspannter, aber sauber
       "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
     },
-
-    // gleich wie bei dir
-    ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"],
   },
 ];
+
+export default config;

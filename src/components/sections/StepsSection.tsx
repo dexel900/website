@@ -1,6 +1,5 @@
 "use client";
 
-import Card from "@/components/ui/Card/Card";
 import styles from "@/components/ui/Card/Card.module.css";
 import PrimaryButton from "@/components/ui/PrimaryButton";
 

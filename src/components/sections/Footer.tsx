@@ -53,7 +53,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           {/* Adresse */}
           <div className="text-[hsl(var(--color-text-base))]">
-            <p>//web/bin/ich Webagentur</p>
+            <p>{"://web/bin/ich Webagentur"}</p>
             <p>Düsselthaler Str. 9</p>
             <p>40211 Düsseldorf</p>
             <p>GERMANY</p>

@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+
 import styles from "@/components/ui/Card/Card.module.css";
+
 
 /* ========= CTA im Primary-Stil (genau euer Button) ========= */
 type ContactBtnProps = {
@@ -94,7 +96,11 @@ export default function WbiLeadForm({ onSubmit }: Props) {
   const [newsletter, setNewsletter] = useState(false);
   const [hp, setHp] = useState("");
   const [appendMsg, setAppendMsg] = useState("");
-  const [leadId, setLeadId] = useState<string | null>(null);
+  const [_leadId, setLeadId] = useState<string | null>(null);
+  // einmalig beim Mount
+useEffect(() => {
+  setLeadId(prev => prev ?? `lead-${Date.now()}`);
+}, []);
   const wrapRef = useRef<HTMLDivElement | null>(null);
 
   // --- Autoscroll-Fix: initialen Lauf & Step 0 überspringen

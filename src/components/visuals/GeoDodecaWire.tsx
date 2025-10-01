@@ -100,15 +100,15 @@ export default function GeoDodecaWire() {
 
       const rotated: [number, number, number][] = vertices.map(([x, y, z]) => {
         // RZ
-        let X = x * cosZ - y * sinZ;
-        let Y = x * sinZ + y * cosZ;
-        let Z = z;
+        const X = x * cosZ - y * sinZ;
+        const Y = x * sinZ + y * cosZ;
+        const Z = z;
         // RX
-        let Y2 = Y * cosX - Z * sinX;
-        let Z2 = Y * sinX + Z * cosX;
+        const Y2 = Y * cosX - Z * sinX;
+        const Z2 = Y * sinX + Z * cosX;
         // RY
-        let X3 = X * cosY + Z2 * sinY;
-        let Z3 = -X * sinY + Z2 * cosY;
+        const X3 = X * cosY + Z2 * sinY;
+        const Z3 = -X * sinY + Z2 * cosY;
 
         return [X3, Y2, Z3];
       });

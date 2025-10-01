@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+
 import styles from "./Card.module.css";
 
 type Props = {

@@ -1,9 +1,8 @@
 "use client";
 import Image from "next/image";
+
 import PrimaryButton from "@/components/ui/PrimaryButton";
 import FloatBand from "@/components/visuals/FloatBand";
-
-// NEU: unsere Cards importieren
 import ServiceCardSlice from "@/components/ui/Card/ServiceCardSlice";
 import ServiceCardBg from "@/components/ui/Card/ServiceCardBg";
 
