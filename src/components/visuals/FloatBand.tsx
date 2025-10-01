@@ -2,21 +2,19 @@
 
 type Props = {
   color?: string;          // Linienfarbe
-  speedMs?: number;        // Dauer up/down
-  amplitudePct?: number;   // Weg in % der SVG-Höhe
-  widthPx?: number;        // Breite in px
-  strokeWidth?: number;
-  strokeOpacity?: number;
+  speedMs?: number;        // Dauer für eine Bewegung
+  widthPx?: number;        // Breite des Bands
+  strokeWidth?: number;    // Linienstärke
+  strokeOpacity?: number;  // Transparenz
   className?: string;      // zusätzliche Positionierung
 };
 
 export default function FloatBand({
-  color = "rgba(255,255,255,.18)",   // auf weiß; auf schwarz z.B. "rgba(255,255,255,.18)"
-  speedMs = 7000,
-  amplitudePct = 6,
+  color = "rgba(0,0,0,.1)",   // Standard: leicht transparent schwarz
+  speedMs = 10000,            // 10s Zyklus (wie im DIVI)
   widthPx = 250,
-  strokeWidth = .5,
-  strokeOpacity = 0.7,
+  strokeWidth = 1,
+  strokeOpacity = 0.25,
   className = "absolute inset-0 z-0 pointer-events-none",
 }: Props) {
   return (
@@ -25,74 +23,81 @@ export default function FloatBand({
       aria-hidden
       style={
         {
-          ["--afb-color" as any]: color,
-          ["--afb-speed" as any]: `${speedMs}ms`,
-          ["--afb-amp" as any]: `${amplitudePct}%`,
-          ["--afb-w" as any]: `${widthPx}px`,
+          ["--fb-color" as any]: color,
+          ["--fb-speed" as any]: `${speedMs}ms`,
+          ["--fb-w" as any]: `${widthPx}px`,
         } as React.CSSProperties
       }
     >
-      {/* Band füllt die Section-Höhe von oben bis unten */}
-      <div className="afb-band">
-        <svg className="afb-svg" viewBox="0 0 100 400" xmlns="http://www.w3.org/2000/svg">
-          {/* statischer Rahmen */}
-          <g
-            className="afb-frame"
-            fill="none"
-            stroke="currentColor"
-            vectorEffect="non-scaling-stroke"
-            opacity={strokeOpacity}
-            strokeWidth={strokeWidth}
-          >
-            <rect x="0.5" y="0.5" width="99" height="399" />
-          </g>
-
-          {/* alles, was sich bewegt: Mittel- & Querlinien + Muster */}
-          <g
-            className="afb-mover"
-            fill="none"
-            stroke="currentColor"
-            vectorEffect="non-scaling-stroke"
-            opacity={strokeOpacity}
-            strokeWidth={strokeWidth}
-          >
-            {/* Mittel- & Querlinien */}
-            <line x1={50} y1={0}   x2={50}  y2={400} />
-            <line x1={0}  y1={100} x2={100} y2={100} />
-            <line x1={0}  y1={200} x2={100} y2={200} />
-            <line x1={0}  y1={300} x2={100} y2={300} />
-
-            {/* 4er-Muster */}
-            <path d="M0,100 A50,50 0 0 0 100,100" />
-            <circle cx={50} cy={200} r={50} />
-            <path d="M0,300 A50,50 0 0 1 100,300" />
-            <circle cx={50} cy={350} r={50} />
-          </g>
+      <div className="fb-wrap">
+        <svg
+          className="fb-svg"
+          width="250"
+          viewBox="0 0 300 1604"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 892L1 941H299V892C299 809.71 232.29 743 150 743C67.7096 743 1 809.71 1 892Z"
+            className="fb-move"
+          />
+          <path
+            d="M299 146V97L1 97V146C1 228.29 67.7096 295 150 295C232.29 295 299 228.29 299 146Z"
+            className="fb-move"
+          />
+          <rect x="1" y="1" width="298" height="1402" />
+          <line x1="150" y1="0" x2="150" y2="1404" />
+          <path
+            d="M150 1324C232.29 1324 299 1257.29 299 1175C299 1092.71 232.29 1026 150 1026C67.7096 1026 1 1092.71 1 1175C1 1257.29 67.7096 1324 150 1324Z"
+            className="fb-move"
+          />
+          <line x1="0" y1="1175" x2="300" y2="1175" className="fb-move" />
+          <path
+            d="M150 678C232.29 678 299 611.29 299 529C299 446.71 232.29 380 150 380C67.7096 380 1 446.71 1 529C1 611.29 67.7096 678 150 678Z"
+            className="fb-move"
+          />
+          <rect x="1" y="380" width="298" height="298" className="fb-move" />
         </svg>
       </div>
 
       <style jsx>{`
-        .afb-band{
-          position:absolute; top:0; bottom:0; left:50%;
+        .fb-wrap {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 50%;
           transform: translateX(-50%);
-          width: var(--afb-w);          /* 100px default */
+          width: var(--fb-w);
           overflow: hidden;
-          color: var(--afb-color);
-          filter: drop-shadow(0 18px 50px rgba(0,0,0,.06));
+          color: var(--fb-color);
         }
-        .afb-svg{
-          display:block;
-          width:100%;
-          height:140%;                  /* größer als Band -> kein „leer“ */
-          transform: translateY(-20%);  /* Start mittig */
+
+        .fb-svg {
+          display: block;
+          width: 100%;
+          height: 160%; /* größer als Container → Bewegung sichtbar */
+          transform: translateY(-20%);
+          stroke: currentColor;
+          stroke-width: ${strokeWidth};
+          opacity: ${strokeOpacity};
+          fill: none;
         }
-        .afb-mover{
-          animation: afbFloat var(--afb-speed) ease-in-out infinite alternate;
-          will-change: transform;
+
+        .fb-move {
+          animation: fbMove var(--fb-speed) linear infinite;
+          transform-box: fill-box;
+          transform-origin: center;
         }
-        @keyframes afbFloat{
-          0%   { transform: translateY(calc(-1 * var(--afb-amp))); }
-          100% { transform: translateY(var(--afb-amp)); }
+
+        @keyframes fbMove {
+          0% {
+            transform: translateY(-75px);
+          }
+          50% {
+            transform: translateY(75px);
+          }
+          100% {
+            transform: translateY(-75px);
+          }
         }
       `}</style>
     </div>
