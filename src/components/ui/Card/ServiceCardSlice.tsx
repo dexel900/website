@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
+import styles from "./Card.module.css";
 
 type Props = {
   title: string;
   text: string;
-  img: string;             // Pfad oder URL
-  side?: "right" | "left"; // Bildposition, default: right
+  img: string;
+  side?: "right" | "left";
   className?: string;
 };
 
@@ -19,23 +20,24 @@ export default function ServiceCardSlice({
   return (
     <div
       className={[
-        "card-dark card-dark--slice",
-        side === "right" ? "slice-right" : "slice-left",
+        styles.cardDark,
+        styles.slice,
+        side === "right" ? styles.sliceRight : styles.sliceLeft,
         className,
       ].join(" ")}
     >
-      <div className="slice-text">
-        <h3 className="card-dark-title mb-2">{title}</h3>
-        <p className="card-dark-copy">{text}</p>
+      <div className="sliceText">
+        <h3 className={styles.cardDarkTitle}>{title}</h3>
+        <p className={styles.cardDarkCopy}>{text}</p>
       </div>
 
-      <div className="slice-img">
+      <div className="sliceImg">
         <Image
           src={img}
-          alt=""
+          alt={title}
           width={520}
           height={360}
-          className={`${side === "right" ? "rounded-tl-xl" : "rounded-tr-xl"} w-full h-auto`}
+          className={side === "right" ? "rounded-tl-xl" : "rounded-tr-xl"}
         />
       </div>
     </div>

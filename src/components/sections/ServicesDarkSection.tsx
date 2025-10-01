@@ -16,7 +16,7 @@ export default function ServicesDarkSection() {
         <div className="flex items-center gap-4 sm:gap-6">
           <div className="hidden sm:block overflow-hidden rounded-[var(--radius-pill)] w-36 sm:w-48 h-14 sm:h-16 shrink-0">
             <Image
-              src="/img/hero-chip.jpg"
+              src="/img/webdesign-entwicklung-duesseldorf.webp"
               alt=""
               width={320}
               height={128}
@@ -52,9 +52,17 @@ export default function ServicesDarkSection() {
       <div className="wb-container mt-10 sm:mt-12 lg:mt-20 pb-16 sm:pb-20 lg:pb-28">
         <div className="grid gap-8 lg:grid-cols-12 items-start">
           {/* Left 1/3 – FloatBand (sticky ab Desktop) */}
+          {/* Left 1/3 – FloatBand */}
           <aside className="lg:col-span-4">
-            <div className="relative lg:sticky lg:top-28 h-[160px] sm:h-[220px] lg:h-[360px] rounded-[var(--radius-lg)] overflow-hidden">
-              <FloatBand color="rgba(255,255,255,.08)" />
+            <div className="relative w-full lg:h-[1400px] flex items-center justify-center">
+              <FloatBand
+                color="rgba(255,255,255,0.7)"   // stärker sichtbar
+                strokeWidth={1.2}
+                strokeOpacity={0.9}
+                speedMs={10000}
+                widthPx={250}                   // breiter für die Spalte
+                className="absolute inset-0 mx-auto"
+              />
             </div>
           </aside>
 

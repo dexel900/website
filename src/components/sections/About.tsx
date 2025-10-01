@@ -28,7 +28,12 @@ export default function About() {
       "
     >
       {/* Hintergrundobjekt */}
-      <FloatBand color="rgba(0,0,0,.14)" />
+      <FloatBand
+        color="rgba(0,0,0,.3)"   // deutlich kräftiger
+        strokeWidth={1.2}
+        strokeOpacity={0.9}
+        speedMs={8000}           // optional langsamer     // etwas stärkeres Wobbeln
+      />
 
       {/* Container */}
       <div className="wb-container relative z-10 py-16 md:py-24">

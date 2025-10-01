@@ -1,6 +1,17 @@
 /* Tailwind v4 core */
 @import "tailwindcss";
 
+html, body {
+  width: 100%;
+  overflow-x: clip;       /* moderner als hidden; verhindert horizontales Scrollen */
+  overscroll-behavior-x: none;
+  -webkit-text-size-adjust: 100%;
+}
+* { box-sizing: border-box; }
+
+
+
+
 /* =========================
    THEME (Default: Dark)
    ========================= */
